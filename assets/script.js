@@ -70,19 +70,36 @@ $(document).ready(function(){
     }).then(function(response){
       console.log(response);
       
+      $(".gif").on("click",function(){
+        if(state===animated){
+          $(this).attr("src", urlStill)
+        }
+      })
+
       var i = -1;
 
       response.data.forEach(function(){
         
         i++
 
-        var url = response.data[i].images.fixed_height.url;
-
-        var gif = $("<img>").attr("src",url).addClass("gif")
+        var urlAnimated = response.data[i].images.fixed_height.url;
+        var urlStill = response.data[i].images.fixed_height_still.url;
+        let animated = true;
+        var gif = $("<img>").attr("src",urlAnimated).addClass("gif").prepend(response.data[i].rating);
 
         $(".results").prepend(gif);
 
-        console.log(url)
+        $(".gif").on("click",function(){
+          if(animated === true){
+            $(this).attr("src", urlStill)
+            animated = false;
+          }
+          else if(animated === false){
+            $(this).attr("src", urlAnimated)
+            animated = true;
+          }
+        })
+        
       })
       
 
